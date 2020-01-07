@@ -1,5 +1,13 @@
 .App {
+  margin-left: auto;
+  margin-right: auto;
   text-align: center;
   height: 100%;
-  width: 100%;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+}
+
+.content{
+  height: 85vh;
 }

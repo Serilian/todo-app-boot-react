@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import "./Login.scss";
-import {withRouter} from "react-router-dom";
 
-const Login = ({location, history, }) => {
+
+const Login = ({location, history }) => {
 
     const [userData, setData] = useState({
         name: "",
@@ -27,7 +27,8 @@ const Login = ({location, history, }) => {
                 ...userData,
                 isAuthenticated: true
             });
-            history.push("/home");
+            let atIndex = email.indexOf("@");
+            history.push(`/home/${email.substring(0,atIndex)}`);
         } else {
             setData({
                 ...userData,
@@ -57,4 +58,4 @@ const Login = ({location, history, }) => {
     );
 };
 
-export default withRouter(Login);
+export default Login;
