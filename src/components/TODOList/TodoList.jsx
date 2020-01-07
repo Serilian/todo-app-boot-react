@@ -13,7 +13,7 @@ const TodoList = () => {
     return (
         <div style={{width: "100%",height: "100%", display: "flex", flexDirection: "column"}}>
             <h3>List of your TODOS</h3>
-            <table >
+            <table className={"table"}>
                 <thead>
                 <tr>
                     <th>Id</th>

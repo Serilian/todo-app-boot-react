@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import './App.css';
-import Login from "./Login/Login";
+import Login from "./components/Login/Login";
 import {Route, Switch} from "react-router-dom";
-import Home from "./Home/Home";
-import Error from "./Error/Error";
-import TodoList from "./TODOList/TodoList";
-import Header from "./Header/Header";
-import Footer from "./Footer/Footer";
-import Logout from "./Logout/Logout";
+import Home from "./components/Home/Home";
+import Error from "./components/Error/Error";
+import TodoList from "./components/TODOList/TodoList";
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
+import Logout from "./components/Logout/Logout";
 
 class App extends Component {
 

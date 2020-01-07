@@ -4,7 +4,7 @@ import {NavLink} from "react-router-dom";
 
 const Header = () => {
     return (
-        <header style={{padding: "20px 0"}}>
+        <header>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
                 <p className="navbar-brand mx-0 my-0" >TODO App</p>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"

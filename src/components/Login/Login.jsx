@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import "./Login.scss";
 
 
-const Login = ({location, history }) => {
+const Login = ({location, history}) => {
 
     const [userData, setData] = useState({
         name: "",
@@ -28,7 +28,7 @@ const Login = ({location, history }) => {
                 isAuthenticated: true
             });
             let atIndex = email.indexOf("@");
-            history.push(`/home/${email.substring(0,atIndex)}`);
+            history.push(`/home/${email.substring(0, atIndex)}`);
         } else {
             setData({
                 ...userData,
@@ -44,15 +44,22 @@ const Login = ({location, history }) => {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center"
-        }}>
+        }} className={"container"}>
             {!isAuthenticated && <h1>Please log in</h1>}
             {isAuthenticated && <h3>Login successful</h3>}
-            {(isAuthenticated !== null && !isAuthenticated) && <h3>Login failed</h3>}
+            {(isAuthenticated !== null && !isAuthenticated) && <h3 className={"alert alert-danger"}>Login failed</h3>}
             <form>
-                <input id={"email"} name={"email"} value={email} onChange={handleChange} placeholder={"email"}/>
-                <input id={"password"} name={"password"} value={password} onChange={handleChange} type={"password"}
-                       placeholder={"password"}/>
-                <input className={"submit"} type={"submit"} value={"Submit"} onClick={handleSubmit}/>
+                <div className={"form-group"}>
+                    <label htmlFor="email">Email</label>
+                    <input id={"email"} name={"email"} value={email} onChange={handleChange} placeholder={"email"}/>
+                </div>
+                <div className={"form-group"}>
+                    <label htmlFor="password">Password</label>
+                    <input id={"password"} name={"password"} value={password}
+                           onChange={handleChange} type={"password"}
+                           placeholder={"password"}/>
+                </div>
+                <input className={"btn btn-success"} type={"submit"} value={"Submit"} onClick={handleSubmit}/>
             </form>
         </div>
     );
