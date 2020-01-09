@@ -1,41 +1,44 @@
-import React, {useState} from 'react';
+import React, {Component} from 'react';
 import "./Login.scss";
 
+class Login extends Component {
 
-const Login = ({location, history}) => {
-
-    const [userData, setData] = useState({
-        name: "",
-        password: "",
-        isAuthenticated: null
-    });
-
-    const {isAuthenticated, email, password} = userData;
-
-    const handleChange = e => {
-        const {name, value} = e.target;
-        setData({
-            ...userData,
-            [name]: value
-        });
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (email === "fhagno@yahoo.com" && password === "test123") {
-            setData({
-                ...userData,
-                isAuthenticated: true
-            });
-            let atIndex = email.indexOf("@");
-            history.push(`/home/${email.substring(0, atIndex)}`);
-        } else {
-            setData({
-                ...userData,
-                isAuthenticated: false
-            });
+    constructor(props) {
+        super(props);
+        this.state = {
+            email: "",
+            password: "",
+            isAuthenticated: null
         }
-    };
+    }
+
+
+
+   handleChange = e => {
+    const {name, value} = e.target;
+    this.setState({[name]: value
+    });
+};
+
+   handleSubmit = (e) => {
+    e.preventDefault();
+    if (this.state.email === "fhagno@yahoo.com" && this.state.password === "test123") {
+        this.setState({
+            isAuthenticated: true
+        });
+        let atIndex = this.state.email.indexOf("@");
+        this.props.handleLogin(this.state.email);
+        this.props.history.push(`/home/${this.state.email.substring(0, atIndex)}`);
+    } else {
+        this.setState({
+            isAuthenticated: false
+        });
+    }
+};
+render()
+
+{
+    const {isAuthenticated, email, password} = this.state;
 
     return (
         <div style={{
@@ -51,18 +54,20 @@ const Login = ({location, history}) => {
             <form>
                 <div className={"form-group"}>
                     <label htmlFor="email">Email</label>
-                    <input id={"email"} name={"email"} value={email} onChange={handleChange} placeholder={"email"}/>
+                    <input id={"email"} name={"email"} value={email} onChange={this.handleChange} placeholder={"email"}/>
                 </div>
                 <div className={"form-group"}>
                     <label htmlFor="password">Password</label>
                     <input id={"password"} name={"password"} value={password}
-                           onChange={handleChange} type={"password"}
+                           onChange={this.handleChange} type={"password"}
                            placeholder={"password"}/>
                 </div>
-                <input className={"btn btn-success"} type={"submit"} value={"Submit"} onClick={handleSubmit}/>
+                <input className={"btn btn-success"} type={"submit"} value={"Submit"} onClick={this.handleSubmit}/>
             </form>
         </div>
     );
-};
+}
+;
+}
 
 export default Login;

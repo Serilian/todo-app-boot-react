@@ -8,21 +8,53 @@ import TodoList from "./components/TODOList/TodoList";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import Logout from "./components/Logout/Logout";
+import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 
 class App extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+                isUserLoggedIn: false
+        }
+    }
+
+
+
+    registerSuccessfulLogin = (userName)=> {
+        sessionStorage.setItem("authenticatedUser", userName);
+        if(!this.state.isUserLoggedIn) {
+            this.setState({
+                isUserLoggedIn: true
+            });
+        }
+    };
+
+    registerLogout = ()=> {
+        sessionStorage.removeItem("authenticatedUser");
+        if(this.state.isUserLoggedIn) {
+            this.setState({
+                isUserLoggedIn: false
+            });
+        }
+    };
+
+    isUserLoggedIn=()=> {
+       return this.state.isUserLoggedIn;
+    };
 
     render() {
         return (
             <div className="App">
-                <Header/>
+                <Header isUserLoggedIn={this.state.isUserLoggedIn}/>
                 <div className="content">
                     <Switch>
-                        <Route path={"/"} exact component={Login}/>
-                        <Route path={"/login"} exact component={Login}/>
-                        <Route path={"/logout"} exact component={Logout}/>
-                        <Route path={"/home/:name"} exact component={Home}/>
-                        <Route path={"/home"} exact component={Home}/>
-                        <Route path={"/todos"} exact component={TodoList}/>
+                        <Route path={"/"} exact render={(props)=> (<Login handleLogin={this.registerSuccessfulLogin} {...props} />)}/>
+                        <Route path={"/login"} exact render={(props)=> (<Login handleLogin={this.registerSuccessfulLogin} {...props} />)}/>
+                        <Route path={"/logout"} exact render={(props)=>(<Logout handleLogout={this.registerLogout} {...props} />)}/>
+                        <PrivateRoute isUserLoggedIn={this.isUserLoggedIn()} path={"/home/:name"} exact render={(props)=>(<Home {...props} />)}/>
+                        <PrivateRoute isUserLoggedIn={this.isUserLoggedIn()} path={"/home"} exact render={(props)=>(<Home {...props} />)}/>
+                        <PrivateRoute isUserLoggedIn={this.isUserLoggedIn()} path={"/todos"} exact  render={(props)=>(<TodoList {...props} />)}/>
                         <Route component={Error}/>
                     </Switch>
                 </div>
