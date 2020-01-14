@@ -22,10 +22,8 @@ class App extends Component {
     }
 
     registerSuccessfulLogin = (userName) => {
-        sessionStorage.setItem("authenticatedUser", userName);
-
+        localStorage.setItem("authenticatedUser", userName);
         let username = userName.substring(0, userName.indexOf("@"));
-
 
         if (!this.state.isUserLoggedIn) {
             this.setState({
@@ -36,7 +34,7 @@ class App extends Component {
     };
 
     registerLogout = () => {
-        sessionStorage.removeItem("authenticatedUser");
+        localStorage.removeItem("authenticatedUser");
         if (this.state.isUserLoggedIn) {
             this.setState({
                 isUserLoggedIn: false
@@ -47,6 +45,12 @@ class App extends Component {
     isUserLoggedIn = () => {
         return this.state.isUserLoggedIn;
     };
+
+    componentDidMount() {
+        if(this.isUserLoggedIn()) {
+            this.props.history.push("/home");
+        }
+    }
 
     render() {
         return (

@@ -12,13 +12,24 @@ class Login extends Component {
         }
     }
 
+    handleChange = e => {
+        const {name, value} = e.target;
+        this.setState({
+            [name]: value
+        });
+    };
 
+    componentDidMount() {
+        if(localStorage.getItem('authenticatedUser')) {
+            let username = localStorage.getItem('authenticatedUser');
+            let atIndex = localStorage.getItem('authenticatedUser').indexOf("@");
+            this.props.handleLogin(username);
+            this.props.history.push(`/home/${username.substring(0, atIndex)}`);
+        } else {
 
-   handleChange = e => {
-    const {name, value} = e.target;
-    this.setState({[name]: value
-    });
-};
+        }
+    }
+
 
    handleSubmit = (e) => {
     e.preventDefault();
@@ -35,39 +46,39 @@ class Login extends Component {
         });
     }
 };
-render()
+    render() {
+        const {isAuthenticated, email, password} = this.state;
 
-{
-    const {isAuthenticated, email, password} = this.state;
-
-    return (
-        <div style={{
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center"
-        }} className={"container"}>
-            {!isAuthenticated && <h1>Please log in</h1>}
-            {isAuthenticated && <h3>Login successful</h3>}
-            {(isAuthenticated !== null && !isAuthenticated) && <h3 className={"alert alert-danger"}>Login failed</h3>}
-            <form>
-                <div className={"form-group"}>
-                    <label htmlFor="email">Email</label>
-                    <input id={"email"} name={"email"} value={email} onChange={this.handleChange} placeholder={"email"}/>
-                </div>
-                <div className={"form-group"}>
-                    <label htmlFor="password">Password</label>
-                    <input id={"password"} name={"password"} value={password}
-                           onChange={this.handleChange} type={"password"}
-                           placeholder={"password"}/>
-                </div>
-                <input className={"btn btn-success"} type={"submit"} value={"Submit"} onClick={this.handleSubmit}/>
-            </form>
-        </div>
-    );
-}
-;
+        return (
+            <div style={{
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center"
+            }} className={"container"}>
+                {!isAuthenticated && <h1>Please log in</h1>}
+                {isAuthenticated && <h3>Login successful</h3>}
+                {(isAuthenticated !== null && !isAuthenticated) &&
+                <h3 className={"alert alert-danger"}>Login failed</h3>}
+                <form>
+                    <div className={"form-group"}>
+                        <label htmlFor="email">Email</label>
+                        <input id={"email"} name={"email"} value={email} onChange={this.handleChange}
+                               placeholder={"email"}/>
+                    </div>
+                    <div className={"form-group"}>
+                        <label htmlFor="password">Password</label>
+                        <input id={"password"} name={"password"} value={password}
+                               onChange={this.handleChange} type={"password"}
+                               placeholder={"password"}/>
+                    </div>
+                    <input className={"btn btn-success"} type={"submit"} value={"Submit"} onClick={this.handleSubmit}/>
+                </form>
+            </div>
+        );
+    }
+    ;
 }
 
 export default Login;
