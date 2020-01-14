@@ -3,11 +3,11 @@ import {Redirect, Route} from "react-router-dom";
 
 class PrivateRoute extends Component {
     render() {
-            if (this.props.isUserLoggedIn) {
-               return (<Route {...this.props} />)
-            } else {
-                return (<Redirect to={"/login"}/>)
-            }
+        if (this.props.isUserLoggedIn) {
+            return (<Route {...this.props} />)
+        } else {
+            return (<Redirect to={"/login"}/>)
+        }
     }
 }
 
