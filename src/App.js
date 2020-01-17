@@ -9,6 +9,7 @@ import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import Logout from "./components/Logout/Logout";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
+import Todo from "./components/Todo/Todo";
 
 class App extends Component {
 
@@ -70,6 +71,8 @@ class App extends Component {
                                       render={(props) => (<Home {...props} />)}/>
                         <PrivateRoute isUserLoggedIn={this.isUserLoggedIn()} path={"/todos"} exact
                                       render={(props) => (<TodoList {...props} user={this.state.username}/>)}/>
+                        <PrivateRoute isUserLoggedIn={this.isUserLoggedIn()} path={"/todos/:id"} exact
+                                      render={(props) => (<Todo {...props} user={this.state.username}/>)}/>
                         <Route component={Error}/>
                     </Switch>
                 </div>

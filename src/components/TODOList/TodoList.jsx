@@ -7,7 +7,7 @@ class TodoList extends React.Component {
         todos: [],
     };
 
-    fetchTodos = ()=> {
+    fetchTodos = () => {
         axios.get(`http://localhost:8080/users/${this.props.user}/todos`)
             .then(response => this.setState({
                 todos: response.data
@@ -25,6 +25,12 @@ class TodoList extends React.Component {
                 console.log(response.data);
                 this.fetchTodos();
             });
+    };
+
+
+    handleUpdateTodo = (id) => {
+        console.log(id);
+        this.props.history.push(`/todos/${id}`);
     };
 
 
@@ -52,7 +58,9 @@ class TodoList extends React.Component {
                                 <td>{todo.deadline}</td>
                                 <td>{todo.completed.toString()}</td>
                                 <td>
-                                    <button className={"btn btn-info"}>Update</button>
+                                    <button className={"btn btn-info"}
+                                            onClick={() => this.handleUpdateTodo(todo.id)}>Update
+                                    </button>
                                 </td>
                                 <td>
                                     <button className={"btn btn-danger"}
@@ -67,6 +75,7 @@ class TodoList extends React.Component {
             </div>
         );
     }
+
 }
 
 export default TodoList;

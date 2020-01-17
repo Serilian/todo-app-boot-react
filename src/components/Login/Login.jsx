@@ -30,7 +30,6 @@ class Login extends Component {
         }
     }
 
-
    handleSubmit = (e) => {
     e.preventDefault();
     if (this.state.email === "fhagno@yahoo.com" && this.state.password === "test123") {
