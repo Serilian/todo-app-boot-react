@@ -8,12 +8,34 @@ class Todo extends React.Component {
 
     state = {
         id: this.props.match.params.id,
-        description: "Test description",
-        targetDate: moment(new Date()).format('YYYY-MM-DD')
+        description: "",
+        targetDate: moment(new Date()).format("YYYY-MM-DD")
     };
 
     onSubmit = (values) => {
-        console.log(values);
+
+        let todo = {
+            id: this.state.id,
+            description: values.description,
+            deadline: values.targetDate,
+            isCompleted: false,
+            userName: this.props.user
+        };
+
+        if(todo.id !== "-1") {
+            axios.put(`http://localhost:8080/users/${this.props.user}/todos/${this.state.id}`, todo)
+                .then(resp => {
+                    console.log(resp.data);
+                    this.props.history.push("/todos");
+                });
+        } else if(todo.id ==="-1") {
+            axios.post(`http://localhost:8080/users/${this.props.user}/todos`, todo)
+                .then(resp => {
+                    console.log(resp.data);
+                    this.props.history.push("/todos");
+                });
+        }
+
     };
 
     validate = (values) => {
@@ -30,6 +52,15 @@ class Todo extends React.Component {
        return errors;
     };
 
+    componentDidMount() {
+        if(this.state.id === "-1") {
+            return;
+        }
+        axios.get(`http://localhost:8080/users/${this.props.user}/todos/${this.state.id}`)
+            .then(resp => this.setState({description: resp.data.description, targetDate: moment(resp.data.deadline).format("YYYY-MM-DD")}))
+            .catch(error=> console.log(error));
+    }
+
     render() {
         let {description, targetDate} = this.state;
         return (
@@ -40,6 +71,7 @@ class Todo extends React.Component {
                         description,
                         targetDate
                     }}
+                    enableReinitialize={true}
                     onSubmit={this.onSubmit}
                     validate={this.validate}
                     validateOnChange={false}

@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from "axios";
+import moment from "moment";
 
 class TodoList extends React.Component {
 
@@ -33,8 +34,14 @@ class TodoList extends React.Component {
         this.props.history.push(`/todos/${id}`);
     };
 
+    handleAddTodo = () => {
+        this.props.history.push(`/todos/-1`);
+    };
 
     render() {
+
+        this.state.todos.sort((a,b)=> a.id - b.id);
+
         return (
             <div style={{width: "100%", height: "100%", display: "flex", flexDirection: "column"}}>
                 <h3>List of your TODOS</h3>
@@ -55,7 +62,7 @@ class TodoList extends React.Component {
                             <tr key={todo.id}>
                                 <td>{todo.id}</td>
                                 <td>{todo.description}</td>
-                                <td>{todo.deadline}</td>
+                                <td>{moment(todo.deadline).format("YYYY-MM-DD")}</td>
                                 <td>{todo.completed.toString()}</td>
                                 <td>
                                     <button className={"btn btn-info"}
@@ -72,6 +79,9 @@ class TodoList extends React.Component {
                     })}
                     </tbody>
                 </table>
+                <div className={"row"}>
+                    <button className={"btn btn-primary"} onClick={this.handleAddTodo}>Add</button>
+                </div>
             </div>
         );
     }
