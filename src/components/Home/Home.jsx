@@ -7,14 +7,14 @@ const Home = () => {
     const [message, setMessage] = useState("");
 
     let getMessage = () => {
-        axios.get("http://localhost:8080//hello-path/filip")
+
+        axios.get("http://localhost:8080/hello-path/filip")
             .then(resp => setMessage(resp.data.message))
             .catch(error => {
                 console.log(error);
-                setMessage("Something went wrong;(")
+                setMessage("Something went wrong : " + error.message);
             });
     };
-
 
     return (
         <div className={"container"}>

@@ -20,14 +20,14 @@ class Login extends Component {
     };
 
     componentDidMount() {
-        if(localStorage.getItem('authenticatedUser')) {
-            let username = localStorage.getItem('authenticatedUser');
-            let atIndex = localStorage.getItem('authenticatedUser').indexOf("@");
-            this.props.handleLogin(username);
-            this.props.history.push(`/home/${username.substring(0, atIndex)}`);
-        } else {
-
-        }
+        // if(localStorage.getItem('authenticatedUser')) {
+        //     let username = localStorage.getItem('authenticatedUser');
+        //     let atIndex = localStorage.getItem('authenticatedUser').indexOf("@");
+        //     this.props.handleLogin(username);
+        //     this.props.history.push(`/home/${username.substring(0, atIndex)}`);
+        // } else {
+        //
+        // }
     }
 
    handleSubmit = (e) => {
@@ -37,7 +37,7 @@ class Login extends Component {
             isAuthenticated: true
         });
         let atIndex = this.state.email.indexOf("@");
-        this.props.handleLogin(this.state.email);
+        this.props.handleLogin(this.state.email, this.state.password);
         this.props.history.push(`/home/${this.state.email.substring(0, atIndex)}`);
     } else {
         this.setState({

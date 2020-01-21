@@ -10,6 +10,7 @@ import Footer from "./components/Footer/Footer";
 import Logout from "./components/Logout/Logout";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import Todo from "./components/Todo/Todo";
+import {setupAxiosInterceptors} from "./interceptors/axiosInterceptors";
 
 class App extends Component {
 
@@ -18,19 +19,22 @@ class App extends Component {
         this.state = {
             isUserLoggedIn: false,
             todos: [],
-            username: ""
+            username: "",
+            password: ""
         }
     }
 
-    registerSuccessfulLogin = (userName) => {
+    registerSuccessfulLogin = (userName, password) => {
         localStorage.setItem("authenticatedUser", userName);
         let username = userName.substring(0, userName.indexOf("@"));
 
         if (!this.state.isUserLoggedIn) {
             this.setState({
                 isUserLoggedIn: true,
-                username: username
+                username: username,
+                password: password
             });
+            setupAxiosInterceptors(username, password);
         }
     };
 
@@ -49,6 +53,7 @@ class App extends Component {
 
     componentDidMount() {
         if(this.isUserLoggedIn()) {
+            setupAxiosInterceptors();
             this.props.history.push("/home");
         }
     }
