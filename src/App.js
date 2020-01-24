@@ -20,26 +20,27 @@ class App extends Component {
             isUserLoggedIn: false,
             todos: [],
             username: "",
-            password: ""
+            password: "",
+            token: ""
         }
     }
 
-    registerSuccessfulLogin = (userName, password) => {
-        localStorage.setItem("authenticatedUser", userName);
-        let username = userName.substring(0, userName.indexOf("@"));
-
+    registerSuccessfulLogin = (username, token) => {
+        console.log(username, token);
+        localStorage.setItem("authenticatedUserToken", token);
         if (!this.state.isUserLoggedIn) {
             this.setState({
                 isUserLoggedIn: true,
-                username: username,
-                password: password
+                token: token,
+                username: username
             });
-            setupAxiosInterceptors(username, password);
+
         }
+        setupAxiosInterceptors(this.props.token);
     };
 
     registerLogout = () => {
-        localStorage.removeItem("authenticatedUser");
+        localStorage.removeItem("authenticatedUserToken");
         if (this.state.isUserLoggedIn) {
             this.setState({
                 isUserLoggedIn: false
@@ -52,8 +53,7 @@ class App extends Component {
     };
 
     componentDidMount() {
-        if(this.isUserLoggedIn()) {
-            setupAxiosInterceptors();
+        if (this.isUserLoggedIn()) {
             this.props.history.push("/home");
         }
     }
@@ -71,13 +71,13 @@ class App extends Component {
                         <Route path={"/logout"} exact
                                render={(props) => (<Logout handleLogout={this.registerLogout} {...props} />)}/>
                         <PrivateRoute isUserLoggedIn={this.isUserLoggedIn()} path={"/home/:name"} exact
-                                      render={(props) => (<Home {...props} />)}/>
+                                      render={(props) => (<Home {...props} token={this.state.token}/>)}/>
                         <PrivateRoute isUserLoggedIn={this.isUserLoggedIn()} path={"/home"} exact
-                                      render={(props) => (<Home {...props} />)}/>
+                                      render={(props) => (<Home {...props} token={this.state.token} />)}/>
                         <PrivateRoute isUserLoggedIn={this.isUserLoggedIn()} path={"/todos"} exact
-                                      render={(props) => (<TodoList {...props} user={this.state.username}/>)}/>
+                                      render={(props) => (<TodoList {...props} user={this.state.username} token={this.state.token}/>)}/>
                         <PrivateRoute isUserLoggedIn={this.isUserLoggedIn()} path={"/todos/:id"} exact
-                                      render={(props) => (<Todo {...props} user={this.state.username}/>)}/>
+                                      render={(props) => (<Todo {...props} user={this.state.username} token={this.state.token}/>)}/>
                         <Route component={Error}/>
                     </Switch>
                 </div>

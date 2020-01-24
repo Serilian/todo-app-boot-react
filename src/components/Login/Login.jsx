@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import "./Login.scss";
+import Jwtauthservice from "../../service/jwtauthservice";
 
 class Login extends Component {
 
@@ -20,31 +21,28 @@ class Login extends Component {
     };
 
     componentDidMount() {
-        // if(localStorage.getItem('authenticatedUser')) {
-        //     let username = localStorage.getItem('authenticatedUser');
-        //     let atIndex = localStorage.getItem('authenticatedUser').indexOf("@");
-        //     this.props.handleLogin(username);
-        //     this.props.history.push(`/home/${username.substring(0, atIndex)}`);
-        // } else {
-        //
-        // }
+
     }
 
-   handleSubmit = (e) => {
-    e.preventDefault();
-    if (this.state.email === "fhagno@yahoo.com" && this.state.password === "test123") {
-        this.setState({
-            isAuthenticated: true
-        });
+    handleSubmit = (e) => {
+        e.preventDefault();
         let atIndex = this.state.email.indexOf("@");
-        this.props.handleLogin(this.state.email, this.state.password);
-        this.props.history.push(`/home/${this.state.email.substring(0, atIndex)}`);
-    } else {
-        this.setState({
-            isAuthenticated: false
-        });
-    }
-};
+        let username= this.state.email.substring(0, atIndex);
+        Jwtauthservice.executeJTWauth(username, this.state.password)
+            .then(resp => {
+                    console.log(resp.data);
+                    const token = resp.data.token;
+                    this.props.handleLogin(username,token);
+                    this.props.history.push(`/home/${username}`);
+                }
+            )
+            .catch(()=> {
+                this.setState({isAuthenticated: false})
+            })
+        ;
+
+    };
+
     render() {
         const {isAuthenticated, email, password} = this.state;
 

@@ -1,13 +1,14 @@
 import axios from "axios"
 
-export const setupAxiosInterceptors = (user, password) => {
+export const setupAxiosInterceptors = () => {
 
-    let userLoggedIn = window.localStorage.getItem("authenticatedUser");
+    let userLoggedInToken = window.localStorage.getItem("authenticatedUserToken");
 
+    console.log("Interceptor token: " +userLoggedInToken);
     axios.interceptors.request.use((config) => {
 
-        let basicHeader = `Basic ` + window.btoa(user + ":" + password);
-        if(userLoggedIn) {
+        let basicHeader = `Bearer ` + userLoggedInToken;
+        if(userLoggedInToken) {
             config.headers.authorization = basicHeader;
         }
 
