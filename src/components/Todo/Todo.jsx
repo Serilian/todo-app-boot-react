@@ -2,6 +2,7 @@ import React from 'react';
 import axios from "axios";
 import moment from "moment";
 import {Formik, Form, Field, ErrorMessage} from "formik";
+import {setupAxiosInterceptors} from "../../interceptors/axiosInterceptors";
 
 
 class Todo extends React.Component {
@@ -23,15 +24,13 @@ class Todo extends React.Component {
         };
 
         if(todo.id !== "-1") {
-            axios.put(`http://localhost:8080/users/${this.props.user}/todos/${this.state.id}`, todo)
+            axios.put(`/jpa/users/${this.props.user}/todos/${this.state.id}`, todo)
                 .then(resp => {
-                    console.log(resp.data);
                     this.props.history.push("/todos");
                 });
         } else if(todo.id ==="-1") {
-            axios.post(`http://localhost:8080/users/${this.props.user}/todos`, todo)
+            axios.post(`/jpa/users/${this.props.user}/todos`, todo)
                 .then(resp => {
-                    console.log(resp.data);
                     this.props.history.push("/todos");
                 });
         }
@@ -56,8 +55,12 @@ class Todo extends React.Component {
         if(this.state.id === "-1") {
             return;
         }
-        axios.get(`http://localhost:8080/users/${this.props.user}/todos/${this.state.id}`)
-            .then(resp => this.setState({description: resp.data.description, targetDate: moment(resp.data.deadline).format("YYYY-MM-DD")}))
+        setupAxiosInterceptors();
+        axios.get(`/jpa/users/${this.props.user}/todos/${this.state.id}`)
+            .then(resp => {
+                console.log(resp.data);
+                this.setState({description: resp.data.description, targetDate: moment(resp.data.deadline).format("YYYY-MM-DD")})}
+                )
             .catch(error=> console.log(error));
     }
 

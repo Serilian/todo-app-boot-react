@@ -11,7 +11,7 @@ class TodoList extends React.Component {
 
     fetchTodos = () => {
         setupAxiosInterceptors();
-        axios.get(`/users/${this.props.user}/todos`)
+        axios.get(`/jpa/users/${this.props.user}/todos`)
             .then(response => this.setState({
                 todos: response.data
             }))
@@ -24,7 +24,7 @@ class TodoList extends React.Component {
 
     handleDeleteSingleTodo = (id) => {
         setupAxiosInterceptors();
-        axios.delete(`/users/${this.props.user}/todos/${id}`)
+        axios.delete(`/jpa/users/${this.props.user}/todos/${id}`)
             .then(response => {
                 console.log(response.data);
                 this.fetchTodos();
